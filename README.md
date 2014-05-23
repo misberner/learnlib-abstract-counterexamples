@@ -34,3 +34,13 @@ After the `perform-evaluation.sh` script has completed execution, the results ca
 ```
 <ce length>		<average number of queries> <std.dev. of number of queries>		<average suffix length> <std.dev. of average suffix length>
 ```
+
+
+Prerequisites
+-----------------------------
+Running the evaluation scripts requires (a sufficiently recent version of) the following software to be installed on your system:
+* [Gnuplot](http://www.gnuplot.info/)
+* [Apache Maven](http://maven.apache.org/)
+* [Java 1.7+](http://www.java.com/)
+* [Python 2.7](http://www.python.org/)
+
