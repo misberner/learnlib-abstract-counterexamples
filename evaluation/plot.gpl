@@ -1,0 +1,39 @@
+
+set xrange [0:1100]
+
+set key left top
+set linestyle 1 lt 3 lw 1
+set key box linestyle 1
+set key box opaque
+# set key outside
+
+set terminal png
+set output 'queries-plot.png'
+
+set xlabel "Counterexample length [symbols]"
+
+set ylabel "Queries during analysis [#]"
+
+set yrange [:9000]
+
+plot 'LinearDesc.dat' using 1:2 title "LinearDesc", \
+	'RivestSchapire.dat' using 1:2 title "RivestSchapire", \
+	'RivestSchapireEager.dat' using 1:2 title "RivestSchapireEager", \
+	'Exponential.dat' using 1:2 title "Exponential", \
+	'Partition.dat' using 1:2 title "Partition"
+
+set terminal png
+set output 'suffixlength-plot.png'
+
+set ylabel "Suffix length [symbols]"
+
+set autoscale y
+
+plot 'LinearDesc.dat' using 1:4 title "LinearDesc", \
+	'RivestSchapire.dat' using 1:4 title "RivestSchapire", \
+	'RivestSchapireEager.dat' using 1:4 title "RivestSchapireEager", \
+	'Exponential.dat' using 1:4 title "Exponential", \
+	'Partition.dat' using 1:4 title "Partition"
+
+
+
