@@ -16,11 +16,11 @@ set ylabel "Queries during analysis [#]"
 
 set yrange [:9000]
 
-plot 'LinearDesc.dat' using 1:2 title "LinearDesc", \
+plot 'LinearDesc.dat' using 1:2 title "LinearAsc", \
 	'RivestSchapire.dat' using 1:2 title "RivestSchapire", \
 	'RivestSchapireEager.dat' using 1:2 title "RivestSchapireEager", \
-	'Exponential.dat' using 1:2 title "Exponential", \
-	'Partition.dat' using 1:2 title "Partition"
+	'Exponential.dat' using 1:2 title "Exponential-Rev", \
+	'Partition.dat' using 1:2 title "Partition-Rev"
 
 set terminal png
 set output 'allqueries-plot.png'
@@ -36,7 +36,6 @@ plot 'LinearDesc.dat' using 1:4 title "LinearDesc", \
 	'Partition.dat' using 1:4 title "Partition"
 
 
-
 set terminal png
 set output 'suffixlength-plot.png'
 
@@ -44,11 +43,11 @@ set ylabel "Suffix length [symbols]"
 
 set autoscale y
 
-plot 'LinearDesc.dat' using 1:6 title "LinearDesc", \
+plot 'LinearDesc.dat' using 1:6 title "LinearAsc", \
 	'RivestSchapire.dat' using 1:6 title "RivestSchapire", \
 	'RivestSchapireEager.dat' using 1:6 title "RivestSchapireEager", \
-	'Exponential.dat' using 1:6 title "Exponential", \
-	'Partition.dat' using 1:6 title "Partition"
+	'Exponential.dat' using 1:6 title "Exponential-Rev", \
+	'Partition.dat' using 1:6 title "Partition-Rev"
 
 
 
