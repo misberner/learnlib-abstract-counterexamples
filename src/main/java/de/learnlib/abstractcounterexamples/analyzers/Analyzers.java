@@ -65,6 +65,13 @@ public abstract class Analyzers {
 		}
 	};
 	
+	public static NamedAnalyzer EXPONENTIAL_REV = new NamedAnalyzer("Exponential-Rev") {
+		@Override
+		public int analyzeAbstractCounterexample(AbstractCounterexample acex) {
+			return AnalysisAlgorithms.exponentialSearchReverse(acex, 0, acex.getLength());
+		}
+	};
+	
 	/**
 	 * Analyzer that searches for a suffix index using partition search.
 	 */
@@ -72,6 +79,13 @@ public abstract class Analyzers {
 		@Override
 		public int analyzeAbstractCounterexample(AbstractCounterexample acex) {
 			return AnalysisAlgorithms.partitionSearch(acex, 0, acex.getLength());
+		}
+	};
+	
+	public static NamedAnalyzer PARTITION_REV = new NamedAnalyzer("Partition-Rev") {
+		@Override
+		public int analyzeAbstractCounterexample(AbstractCounterexample acex) {
+			return AnalysisAlgorithms.partitionSearchReverse(acex, 0, acex.getLength());
 		}
 	};
 	
@@ -86,6 +100,14 @@ public abstract class Analyzers {
 	};
 	
 	
+	private static NamedAnalyzer[] KV_VALUES = {
+		LINEAR_ASC,
+		RIVEST_SCHAPIRE,
+		RIVEST_SCHAPIRE_EAGER,
+		EXPONENTIAL_REV,
+		PARTITION_REV
+	};
+	
 	/**
 	 * Retrieves an array of all enabled analyzers. The returned array
 	 * may be modified.
@@ -93,6 +115,10 @@ public abstract class Analyzers {
 	 */
 	public static NamedAnalyzer[] values() {
 		return VALUES.clone();
+	}
+	
+	public static NamedAnalyzer[] kvValues() {
+		return KV_VALUES.clone();
 	}
 	
 	/*

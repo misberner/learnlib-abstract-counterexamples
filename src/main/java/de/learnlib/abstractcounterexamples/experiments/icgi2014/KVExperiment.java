@@ -24,16 +24,16 @@ import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.WordBuilder;
 import net.automatalib.words.impl.Alphabets;
+import de.learnlib.abstractcounterexamples.algorithms.kv.KearnsVaziraniDFA;
 import de.learnlib.abstractcounterexamples.analyzers.Analyzers;
 import de.learnlib.abstractcounterexamples.analyzers.NamedAnalyzer;
-import de.learnlib.algorithms.discriminationtree.dfa.DTLearnerDFA;
 import de.learnlib.cache.dfa.DFACacheOracle;
 import de.learnlib.cache.dfa.DFACaches;
-import de.learnlib.oracles.DefaultQuery;
 import de.learnlib.oracles.CounterOracle.DFACounterOracle;
+import de.learnlib.oracles.DefaultQuery;
 import de.learnlib.oracles.SimulatorOracle.DFASimulatorOracle;
 
-public class Experiment {
+public class KVExperiment {
 	
 	public static int numThreads = -1;
 	
@@ -57,7 +57,6 @@ public class Experiment {
 	private final File outputDir;
 	private final CompactDFA<Integer> dfa;
 	private final Random random;
-	private final boolean reduceCounterexamples;
 	
 	private class Job implements Callable<Void> {
 		
@@ -76,15 +75,13 @@ public class Experiment {
 		
 		@Override
 		public Void call() throws Exception {
-			AnalyzerWrapper wrapper = new AnalyzerWrapper(analyzer, reduceCounterexamples);
-			
 			DFASimulatorOracle<Integer> oracle = new DFASimulatorOracle<>(dfa);
 			
 			DFACounterOracle<Integer> counter = new DFACounterOracle<>(oracle, "");
 			
 			DFACacheOracle<Integer> cache = DFACaches.createTreeCache(dfa.getInputAlphabet(), counter);
 			
-			DTLearnerDFA<Integer> learner = new DTLearnerDFA<>(dfa.getInputAlphabet(), cache, wrapper, true, true);
+			KearnsVaziraniDFA<Integer> learner = new KearnsVaziraniDFA<>(dfa.getInputAlphabet(), cache, analyzer, true);
 			
 			learner.startLearning();
 			
@@ -102,7 +99,7 @@ public class Experiment {
 			//		+ "required " + wrapper.getTotalQueries() + " queries, average suffix length: " + wrapper.getAverageSuffixLength());
 			
 			synchronized(writer) {
-				writer.write(String.format("%4d\t%8d\t%12d\t%3.4f\n", ceLength, wrapper.getTotalQueries(), counter.getCount(), wrapper.getAverageSuffixLength()));
+				writer.write(String.format("%4d\t%8d\t%12d\t%3.4f\n", ceLength, learner.getTotalCEQueries(), counter.getCount(), learner.getAveragePrefixLength()));
 				writer.flush();
 			}
 			
@@ -110,11 +107,10 @@ public class Experiment {
 		}	
 	}
 	
-	public Experiment(File outputDir, Random random, int numStates, int alphabetSize, boolean reduceCounterexamples) {
+	public KVExperiment(File outputDir, Random random, int numStates, int alphabetSize, boolean reduceCounterexamples) {
 		this.dfa = createDFA(random, numStates, alphabetSize);
 		this.outputDir = outputDir;
 		this.random = random;
-		this.reduceCounterexamples = reduceCounterexamples;
 	}
 	
 	public void run(int minCeLength, int maxCeLength, int ceLengthStep, int repeatCount) throws InterruptedException, IOException {
@@ -124,7 +120,7 @@ public class Experiment {
 		
 		List<BufferedWriter> writers = new ArrayList<>();
 		try {
-			for(NamedAnalyzer analyzer : Analyzers.values()) {
+			for(NamedAnalyzer analyzer : Analyzers.kvValues()) {
 				String name = analyzer.getName();
 				File outputFile = new File(outputDir, name + ".dat");
 				BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));

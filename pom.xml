@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.learnlib</groupId>
     <artifactId>learnlib-parent</artifactId>
-    <version>0.10.1-SNAPSHOT</version>
+    <version>0.10.2-SNAPSHOT</version>
   </parent>
   
   <artifactId>learnlib-abstract-counterexamples</artifactId>
@@ -25,7 +25,31 @@
   		<groupId>de.learnlib</groupId>
   		<artifactId>learnlib-discrimination-tree</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>de.learnlib</groupId>
+  		<artifactId>learnlib-cache</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.sf.trove4j</groupId>
+  		<artifactId>trove4j</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.github.misberner.buildergen</groupId>
+  		<artifactId>buildergen</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.learnlib.testsupport</groupId>
+  		<artifactId>learnlib-learning-examples</artifactId>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.automatalib</groupId>
+  		<artifactId>automata-commons-dotutil</artifactId>
+  		<scope>compile</scope>
+  	</dependency>
   </dependencies>
+  
+  
   
   <repositories>
   	<repository>

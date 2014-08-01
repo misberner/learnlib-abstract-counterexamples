@@ -86,6 +86,21 @@ public class AnalysisAlgorithms {
 		return binarySearch(acex, low, high);
 	}
 	
+	public static int exponentialSearchReverse(AbstractCounterexample acex, int low, int high) {
+		int ofs = 1;
+		
+		while(low + ofs < high) {
+			if(acex.testEffect(low + ofs) == 1) {
+				high = low + ofs;
+				break;
+			}
+			low += ofs;
+			ofs *= 2;
+		}
+		
+		return binarySearch(acex, low, high);
+	}
+	
 	/**
 	 * Search for a suffix index using a binary search.
 	 * 
@@ -130,6 +145,23 @@ public class AnalysisAlgorithms {
 				break;
 			}
 			high -= step;
+		}
+		
+		return binarySearch(acex, low, high);
+	}
+	
+	public static int partitionSearchReverse(AbstractCounterexample acex, int low, int high) {
+		int span = high - low + 1;
+		double logSpan = Math.log(span)/Math.log(2);
+		
+		int step = (int)(span/logSpan);
+		
+		while(low + step < high) {
+			if(acex.testEffect(low + step) == 1) {
+				high = low + step;
+				break;
+			}
+			low += step;
 		}
 		
 		return binarySearch(acex, low, high);
